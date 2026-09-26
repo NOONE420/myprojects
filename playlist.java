@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.Random;
-class Main{
+class playlist{
     public static int display(node head){
         node temp3=head;
         System.out.println("\tPLAYLIST");
