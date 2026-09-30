@@ -39,9 +39,10 @@ public class playlist{
                     node newNode=new node(data);
                     if (head==null){
                         head=newNode;
-                        tail=newNode;
+                        tail=head;
                     }
                     else{
+                        newNode.prev=tail;
                         tail.next=newNode;
                         tail=tail.next;
                     }
@@ -56,7 +57,7 @@ public class playlist{
                     System.out.println("\nPlaylist is Empty!");
                 }
                 else{
-                    display(head);
+                    int size=display(head);
 
                     System.out.print("\nName: ");
                     String data=scn.nextLine();
@@ -65,8 +66,9 @@ public class playlist{
                     scn.nextLine();
 
                     node newNode=new node(data);
-                    int size=display(head);
+                    
                     if(n3>=size){
+                        newNode.prev=tail;
                         tail.next=newNode;
                         tail=tail.next;
 
@@ -80,20 +82,25 @@ public class playlist{
 
                         if (n3==1){
                             newNode.next=head;
+                            head.prev=newNode;
                             head=newNode;
 
                             System.out.println("\nADDED!");
                             display(head);
                         }
                         else{
-                            for (i=1;i<(n3-1);i++){
+                            i=1;
+                            while(i!=(n3-1)){
                                 temp=temp.next;
+                                i++;
                             }
 
                             temp2=temp.next;
+                            newNode.prev=temp;
                             temp.next=newNode;
                             temp=temp.next;
                             temp.next=temp2;
+                            temp2.prev=temp;
 
                             System.out.println("\nADDED!");
                             display(head);
@@ -106,32 +113,60 @@ public class playlist{
                     System.out.println("\nPlaylist is Empty!");
                 }
                 else{
-                    display(head);
+                    int size=display(head);
                     
                     System.out.print("\nPosition: ");
                     int n3=scn.nextInt();
                     scn.nextLine();
 
-                    if(n3==1){
-                        head=head.next;
-
-                        System.out.println("\nDELETED!");
-                        display(head);
+                    if (n3>size){
+                        System.out.println("\nINVALID!");
                     }
                     else{
-                        temp=head;
-                        temp2=null;
-                        i=1;
-                        while(i!=(n3-1)){
-                            temp=temp.next;
-                            i++;
-                        }
-                        temp2=temp.next;
-                        temp2=temp2.next;
-                        temp.next=temp2;
+                        if(n3==1){
+                            if(head.next!=null){
+                                head=head.next;
+                                head.prev=null;
+                            }
+                            else{
+                                head=null;
+                                tail=null;
+                            }
+                                
 
-                        System.out.println("\nDELETED!");
-                        display(head);
+                            System.out.println("\nDELETED!");
+                            if(head==null){
+                                System.out.println("\nPlaylist is Empty!");
+                            }
+                            else{
+                                display(head);
+                            }
+                        }
+
+                        else{
+                            temp=head;
+                            temp2=null;
+                            i=1;
+                            while(i!=(n3-1)){
+                                temp=temp.next;
+                                i++;
+                            }
+                            temp2=temp.next;
+                            if (temp2.next!=null){
+                                temp2.prev=null;
+                                temp2=temp2.next;
+                                temp2.prev=temp;
+                                temp.next=temp2;
+                            }
+                            else{
+                                temp.next=null;
+                                tail=tail.prev;
+                            }
+
+
+                            System.out.println("\nDELETED!");
+                            display(head);
+                        }
                     }
                 }
             }
@@ -169,9 +204,11 @@ public class playlist{
 
                 }
             }
+
             else if(n==5){
                 continue;
             }
+
             else{
                 System.out.println("\nINVALID!");
             }
@@ -182,9 +219,11 @@ public class playlist{
 class node{
     public String name;
     public node next;
+    public node prev;
 
     node(String b){
         this.name=b;
         this.next=null;
+        this.prev=null;
     }
 }
